@@ -14,20 +14,12 @@ jobs:
         with:
           python-version: "3.8"
 
-      - name: Get Git Diff Filelist for PRs
-        # if: github.event_name == 'pull_request'
+      - name: Get Git Diff Filelist
         run: |
           cd ivy
           git --no-pager diff "HEAD^..HEAD" --no-color --output change-diff
           git --no-pager diff "HEAD^..HEAD" --name-only --output name-changed
-
-      # - name: Get Git Diff Filelist for Pushes
-      #   if: github.event_name == 'push'
-      #   run: |
-      #     cd ivy
-      #     git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --no-color --output change-diff
-      #     git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --name-only --output name-changed
-
+          
       - name: Run Docstring Tests
         run: |
           cd ivy
