@@ -19,8 +19,8 @@ jobs:
           cd ivy
           git --no-pager diff "HEAD^..HEAD" --no-color --output change-diff
           git --no-pager diff "HEAD^..HEAD" --name-only --output name-changed
-          
+
       - name: Run Docstring Tests
         run: |
           cd ivy
-          docker run --rm -i -v "$(pwd)":/ivy unifyai/ivy:latest python3 -m pytest ivy/ivy_tests/test_modified_docstrings.py
+          docker run --rm -i -v "$(pwd)":/ivy unifyai/ivy:latest python3 -m pytest ivy/ivy_tests/test_modified_docstrings.py -s
