@@ -103,6 +103,8 @@ def test_docstrings(backend):
     # read git diff filelist
     with open("ivy/name-changed") as f:
         changed_filepaths = [line.strip() for line in f.readlines()]
+        # sneek on changed_filepaths
+        print(changed_filepaths)
 
     for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:  # filtering py-code only files
         path_strs_lst = changed_filepath.split(os.path.pathsep)  # 'array', 'container' or others
