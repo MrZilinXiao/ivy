@@ -15,7 +15,7 @@ jobs:
           python-version: "3.8"
 
       - name: Get Git Diff Filelist for PRs
-        if: github.event_name == 'pull_request'
+        # if: github.event_name == 'pull_request'
         run: |
           cd ivy
           git --no-pager diff "HEAD^..HEAD" --no-color --output change-diff
