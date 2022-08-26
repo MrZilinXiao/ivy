@@ -3,10 +3,10 @@ on: [push, pull_request]
 jobs:
   run-docstring-tests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push':
+    if: github.event_name == 'push'
       env:
         BASE_SHA: ${{ github.event.before }}
-    if: github.event_name == 'pull_request':
+    if: github.event_name == 'pull_request'
       env:
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
