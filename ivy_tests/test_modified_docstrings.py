@@ -21,7 +21,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
     code_lines = [code_line.strip() for code_line in code_lines]
 
     # get changed line number
-    diff_command = f'git --no-pager diff "$BASE_SHA..THE_PR" --no-color -- {py_path}'
+    diff_command = f'git --no-pager diff "HEAD^..HEAD" --no-color -- {py_path}'
     diff_ret = subprocess.check_output(diff_command, shell=True).decode('utf-8')
 
     # parse diff_ret into changed line number from strings like `@@ -0,0 **+1**,2 @@`
@@ -104,8 +104,12 @@ def test_docstrings(backend):
     with open("ivy/name-changed") as f:
         changed_filepaths = f.readlines()
 
-    for changed_filepath in changed_filepaths:
-        test_type = changed_filepath.split(os.path.pathsep)[1]  # 'array', 'container' or others
+    for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:  # filtering py-code only files
+        path_strs_lst = changed_filepath.split(os.path.pathsep)  # 'array', 'container' or others
+        print(path_strs_lst)
+        if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:  # skip all non-ivy changes
+            continue
+        test_type = path_strs_lst[1]
         from_array = test_type == 'array'
         from_container = test_type == 'container'
         # for each changed diff file, decide what functions to be tested
