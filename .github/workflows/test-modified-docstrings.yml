@@ -1,0 +1,26 @@
+name: test-docstrings
+on: [push, pull_request]
+jobs:
+  run-docstring-tests:
+    runs-on: ubuntu-latest
+    env: 
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ivy
+          persist-credentials: false
+          submodules: "recursive"
+      - uses: actions/setup-python@v3
+        with:
+          python-version: "3.8"
+
+      - name: Get Git Diff Filelist
+        run: |
+          git --no-pager diff "$BASE_SHA..THE_PR" --no-color --output ivy/change-diff
+          git --no-pager diff "$BASE_SHA..THE_PR" --name-only --output ivy/name-changed
+
+      - name: Run Docstring Tests
+        run: |
+          cd ivy
+          docker run --rm -i -v "$(pwd)":/ivy unifyai/ivy:latest python3 -m pytest ivy/ivy_tests/test_modified_docstrings.py
