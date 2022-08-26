@@ -3,12 +3,6 @@ on: [push, pull_request]
 jobs:
   run-docstring-tests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-      env:
-        BASE_SHA: ${{ github.event.before }}
-    if: github.event_name == 'pull_request'
-      env:
-        BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -19,11 +13,19 @@ jobs:
         with:
           python-version: "3.8"
 
-      - name: Get Git Diff Filelist
+      - name: Get Git Diff Filelist for PRs
+        if: github.event_name == 'pull_request'
         run: |
           cd ivy
-          git --no-pager diff "$BASE_SHA..$GITHUB_SHA" --no-color --output change-diff
-          git --no-pager diff "$BASE_SHA..$GITHUB_SHA" --name-only --output name-changed
+          git --no-pager diff "${{ github.event.pull_request.base.sha }}..$GITHUB_SHA" --no-color --output change-diff
+          git --no-pager diff "${{ github.event.pull_request.base.sha }}..$GITHUB_SHA" --name-only --output name-changed
+
+      - name: Get Git Diff Filelist for Pushes
+        if: github.event_name == 'push'
+        run: |
+          cd ivy
+          git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --no-color --output change-diff
+          git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --name-only --output name-changed
 
       - name: Run Docstring Tests
         run: |
