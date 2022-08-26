@@ -1,4 +1,4 @@
-name: test-docstrings
+name: test-modified-docstrings
 on: [push, pull_request]
 jobs:
   run-docstring-tests:
@@ -17,8 +17,9 @@ jobs:
 
       - name: Get Git Diff Filelist
         run: |
-          git --no-pager diff "$BASE_SHA..THE_PR" --no-color --output ivy/change-diff
-          git --no-pager diff "$BASE_SHA..THE_PR" --name-only --output ivy/name-changed
+          cd ivy
+          git --no-pager diff "$BASE_SHA..THE_PR" --no-color --output change-diff
+          git --no-pager diff "$BASE_SHA..THE_PR" --name-only --output name-changed
 
       - name: Run Docstring Tests
         run: |
