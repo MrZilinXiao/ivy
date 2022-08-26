@@ -9,6 +9,7 @@ jobs:
           path: ivy
           persist-credentials: false
           submodules: "recursive"
+          fetch-depth: 2
       - uses: actions/setup-python@v3
         with:
           python-version: "3.8"
@@ -17,15 +18,15 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           cd ivy
-          git --no-pager diff "${{ github.event.pull_request.base.sha }}..$GITHUB_SHA" --no-color --output change-diff
-          git --no-pager diff "${{ github.event.pull_request.base.sha }}..$GITHUB_SHA" --name-only --output name-changed
+          git --no-pager diff "HEAD^..HEAD" --no-color --output change-diff
+          git --no-pager diff "HEAD^..HEAD" --name-only --output name-changed
 
-      - name: Get Git Diff Filelist for Pushes
-        if: github.event_name == 'push'
-        run: |
-          cd ivy
-          git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --no-color --output change-diff
-          git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --name-only --output name-changed
+      # - name: Get Git Diff Filelist for Pushes
+      #   if: github.event_name == 'push'
+      #   run: |
+      #     cd ivy
+      #     git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --no-color --output change-diff
+      #     git --no-pager diff "${{ github.event.before }}..$GITHUB_SHA" --name-only --output name-changed
 
       - name: Run Docstring Tests
         run: |
