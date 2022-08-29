@@ -35,7 +35,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
     # parse diff_ret into changed line number from strings like `@@ -0,0 **+1**,2 @@`
     line_change_pattern = re.compile(
         r'^@@ -([0-9]+) [+]([0-9]+) @@', re.MULTILINE)
-    changed_line_nums = [int(t[2]) for t in line_change_pattern.findall(
+    changed_line_nums = [int(t[1]) for t in line_change_pattern.findall(
         diff_ret)]  # all altered line numbers
 
     # find all possible docstring spans
