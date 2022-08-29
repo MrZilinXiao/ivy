@@ -16,9 +16,6 @@ class ArrayWithActivations(abc.ABC):
         function, and so the docstring for ivy.relu also applies to this method
         with minimal changes.
         Array Change Test
-        1
-        2
-        3
 
         Examples
         --------
