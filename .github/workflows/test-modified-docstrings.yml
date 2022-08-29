@@ -14,10 +14,18 @@ jobs:
         with:
           python-version: "3.8"
 
-      - name: Get Git Diff Filelist
+      - name: Get Git Diff Filelist for PR
+        if: github.event_name == 'pull_request'
         run: |
           cd ivy
           git --no-pager diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} --name-only --diff-filter=ACMRT --output name-changed
+          python3 dump_diff.py
+
+      - name: Get Git Diff Filelist for Push
+        if: github.event_name == 'push'
+        run: |
+          cd ivy
+          git --no-pager diff ${{ github.event.before }} ${{ github.sha }} --name-only --diff-filter=ACMRT --output name-changed
           python3 dump_diff.py
 
       - name: Run Docstring Tests
