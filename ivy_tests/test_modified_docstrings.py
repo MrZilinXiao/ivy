@@ -124,7 +124,7 @@ def test_docstrings(backend):
         # skip all non-ivy changes
         if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:
             print(
-                f'skipping tests, conditions: {path_strs_lst[0] != "ivy"}, {len(path_strs_lst) <= 2}')
+                f'skipping tests, conditions: {path_strs_lst}, {len(path_strs_lst)}')
             continue
         test_type = path_strs_lst[1]
         from_array = test_type == 'array'
