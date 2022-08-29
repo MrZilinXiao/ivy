@@ -13,5 +13,6 @@ with open('name-changed') as f:
             raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
 
         output[diff_filename] = diff_ret
-
+        
+print(output)
 json.dump(output, open('name-changed.json', 'w'))
