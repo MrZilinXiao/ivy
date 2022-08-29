@@ -9,7 +9,7 @@ jobs:
           path: ivy
           persist-credentials: false
           submodules: "recursive"
-          fetch-depth: 2
+          fetch-depth: 0
       - uses: actions/setup-python@v3
         with:
           python-version: "3.8"
