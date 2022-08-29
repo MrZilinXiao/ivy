@@ -22,7 +22,8 @@ def get_changed_func_name(py_path: str) -> List[str]:
     code_lines = [code_line.strip() for code_line in code_lines]
 
     # get changed line number
-    diff_command = f'git --no-pager diff "HEAD^..HEAD" --no-color -- {py_path}'
+    py_path = py_path[5:]  # strip `/ivy/`
+    diff_command = f'cd ivy && git --no-pager diff "HEAD^..HEAD" --no-color -- {py_path}'
     diff_ret = subprocess.check_output(diff_command, shell=True).decode('utf-8')
 
     # parse diff_ret into changed line number from strings like `@@ -0,0 **+1**,2 @@`
