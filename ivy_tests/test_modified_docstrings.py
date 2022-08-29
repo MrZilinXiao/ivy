@@ -119,7 +119,7 @@ def test_docstrings(backend):
     # filtering py-code only files
     for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:
         path_strs_lst = changed_filepath.split(
-            os.path.pathsep)  # 'array', 'container' or others
+            os.path.sep)  # 'array', 'container' or others
         print(path_strs_lst)
         # skip all non-ivy changes
         if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:
