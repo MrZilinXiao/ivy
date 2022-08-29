@@ -1,7 +1,7 @@
 name: test-modified-docstrings
 on: [push, pull_request]
 jobs:
-  run-docstring-tests:
+  run-modified-docstring-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,8 +17,8 @@ jobs:
       - name: Get Git Diff Filelist
         run: |
           cd ivy
-          git --no-pager diff "HEAD^..HEAD" --no-color --output change-diff
           git --no-pager diff "HEAD^..HEAD" --name-only --output name-changed
+          python3 dump_diff.py
 
       - name: Run Docstring Tests
         run: |
