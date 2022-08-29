@@ -56,6 +56,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
 
 @pytest.mark.parametrize("backend", ["jax", "numpy", "tensorflow", "torch"])
 def test_docstrings(backend):
+    print(os.listdir())
     ivy.set_default_device("cpu")
     ivy.set_backend(backend)
     failures = list()
@@ -118,8 +119,9 @@ def test_docstrings(backend):
 
     # filtering py-code only files
     for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:
+        # changed_filepath: ivy/ivy_tests/test_modified_docstrings.py
         path_strs_lst = changed_filepath.split(
-            os.path.sep)  # 'array', 'container' or others
+            os.path.sep)[1:]  # 'array', 'container' or others
         print(path_strs_lst)
         # skip all non-ivy changes
         if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:
