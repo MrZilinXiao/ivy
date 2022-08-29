@@ -26,17 +26,19 @@ def get_changed_func_name(py_path: str) -> List[str]:
     py_path = py_path[5:]  # strip `/ivy/`
     input_dict = json.load(open('ivy/name-changed.json', 'r'))
     diff_ret = input_dict[py_path]
+    # strip the first line and parse all changed line numbers
+    changed_line_nums = [int(line.split(',')[0]) for line in diff_ret.split('\n')[1:]]
     # diff_command = f'cd ivy && git --no-pager diff "HEAD^..HEAD" --no-color -- {py_path}'  # don't work out in container!!
     # try:
     #     diff_ret = subprocess.check_output(diff_command, shell=True, stderr=subprocess.STDOUT).decode('utf-8')
     # except subprocess.CalledProcessError as e:
     #     raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
 
-    # parse diff_ret into changed line number from strings like `@@ -0,0 **+1**,2 @@`
-    line_change_pattern = re.compile(
-        r'^@@ -([0-9]+) [+]([0-9]+) @@', re.MULTILINE)
-    changed_line_nums = [int(t[1]) for t in line_change_pattern.findall(
-        diff_ret)]  # all altered line numbers
+    # parse diff_ret into changed line number from strings like 
+    # line_change_pattern = re.compile(
+    #     r'^@@ -([0-9]+) [+]([0-9]+) @@', re.MULTILINE)  # `@@ -17,0 +18 @@`
+    # changed_line_nums = [int(t[1]) for t in line_change_pattern.findall(
+    #     diff_ret)]  # all altered line numbers
 
     # find all possible docstring spans
     docstrings_pattern = re.compile(r'"""[\w\W]*?"""')

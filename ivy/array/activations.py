@@ -36,7 +36,7 @@ class ArrayWithActivations(abc.ABC):
         """
         ivy.Array instance method variant of ivy.leaky_relu. This method simply wraps
         the function, and so the docstring for ivy.leaky_relu also applies to this
-        method with minimal changes...
+        method with minimal changes.....
 
         Examples
         --------
