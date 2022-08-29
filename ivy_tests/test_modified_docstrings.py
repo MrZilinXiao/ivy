@@ -25,7 +25,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
     # get changed line number
     py_path = py_path[5:]  # strip `/ivy/`
     input_dict = json.load(open('ivy/name-changed.json', 'r'))
-    diff_ret = input_dict[py_path]
+    diff_ret = input_dict[py_path].strip()
     # strip the first line and parse all changed line numbers
     changed_line_nums = [int(line.split(',')[0]) for line in diff_ret.split('\n')[1:]]
     # diff_command = f'cd ivy && git --no-pager diff "HEAD^..HEAD" --no-color -- {py_path}'  # don't work out in container!!

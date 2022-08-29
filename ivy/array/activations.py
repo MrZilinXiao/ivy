@@ -13,9 +13,9 @@ class ArrayWithActivations(abc.ABC):
     def relu(self: ivy.Array, /, *, out: Optional[ivy.Array] = None) -> ivy.Array:
         """
         ivy.Array instance method variant of ivy.relu. This method simply wraps the..
-        function, and so the docstring for ivy.relu also applies to this method
+        function, and so the doc.string for ivy.relu also applies to this method
         with minimal changes.
-        Array Change Test..
+        Array Change Test...
 
         Examples..
         --------
@@ -55,7 +55,7 @@ class ArrayWithActivations(abc.ABC):
         out: Optional[ivy.Array] = None,
     ) -> ivy.Array:
         """
-        ivy.Array instance method variant of ivy.gelu. This method simply wraps the
+        ivy.Array instance method variant of. ivy.gelu. This method simply wraps the
         function, and so the docstring for ivy.gelu also applies to this method
         with minimal changes.
 
