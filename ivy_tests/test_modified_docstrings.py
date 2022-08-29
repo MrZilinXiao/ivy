@@ -60,6 +60,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
                          "This is possible but unusal!")
             ret.append(func_name_lst[-1])
         prev_line_num = end_line + 1  # update matching range
+    print(f'functions waited to be tested: {ret}')
     return ret
 
 

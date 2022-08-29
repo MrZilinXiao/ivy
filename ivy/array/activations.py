@@ -72,7 +72,7 @@ class ArrayWithActivations(abc.ABC):
         """
         ivy.Array instance method variant of ivy.sigmoid. This method simply wraps the
         function, and so the docstring for ivy.sigmoid also applies to this method
-        with minimal changes.
+        with minimal changes..
 
         Examples
         --------
@@ -93,7 +93,7 @@ class ArrayWithActivations(abc.ABC):
         """
         ivy.Array instance method variant of ivy.softmax. This method simply wraps the
         function, and so the docstring for ivy.softmax also applies to this method
-        with minimal changes.
+        with minimal changes..
 
         Examples
         --------
@@ -108,7 +108,7 @@ class ArrayWithActivations(abc.ABC):
         """
         ivy.Array instance method variant of ivy.softplus. This method simply wraps the
         function, and so the docstring for ivy.softplus also applies to this method
-        with minimal changes.
+        with minimal changes..
 
         Examples
         --------
