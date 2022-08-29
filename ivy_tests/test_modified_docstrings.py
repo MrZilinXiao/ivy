@@ -12,6 +12,7 @@ from typing import List
 import ivy
 import ivy_tests.test_ivy.helpers as helpers
 
+
 def get_changed_func_name(py_path: str) -> List[str]:
     ret = []
     with open(py_path) as f:
@@ -25,22 +26,31 @@ def get_changed_func_name(py_path: str) -> List[str]:
     diff_ret = subprocess.check_output(diff_command, shell=True).decode('utf-8')
 
     # parse diff_ret into changed line number from strings like `@@ -0,0 **+1**,2 @@`
-    line_change_pattern = re.compile(r'^@@ -([0-9]+),([0-9]+) [+]([0-9]+),([0-9]+) @@', re.MULTILINE)
-    changed_line_nums = [int(t[2]) for t in line_change_pattern.findall(diff_ret)]
+    line_change_pattern = re.compile(
+        r'^@@ -([0-9]+),([0-9]+) [+]([0-9]+),([0-9]+) @@', re.MULTILINE)
+    changed_line_nums = [int(t[2]) for t in line_change_pattern.findall(
+        diff_ret)]  # all altered line numbers
 
     # find all possible docstring spans
     docstrings_pattern = re.compile(r'"""[\w\W]*?"""')
     new_line_pattern = re.compile(r'\n')
-    func_name_pattern = re.compile(r'def (.*)\(')
-    for m in docstrings_pattern.finditer(code_str):
-        start_line = len(new_line_pattern.findall(code_str, 0, m.start(0)))+1
-        end_line = len(new_line_pattern.findall(code_str, 0, m.end(0)))+1
+    func_name_pattern = re.compile(r'def (.*)\(', re.MULTILINE)
+    prev_line_num = 1
+    for m in docstrings_pattern.finditer(code_str):  # for each docstring block
+        # docstring start line number
+        start_line = len(new_line_pattern.findall(code_str, 0, m.start(0))) + 1
+        end_line = len(new_line_pattern.findall(code_str, 0, m.end(0))) + \
+            1  # docstring end line number
+        print(f'line num debug: {start_line}, {changed_line_nums}, {end_line}')
         if any(start_line <= changed_line_num <= end_line for changed_line_num in changed_line_nums):
             # retrieve the function name corresponding to the start line
-            def_line = code_lines[start_line - 1]  # `def asin(self: ivy.Array, *, out: Optional[ivy.Array] = None) -> ivy.Array:`
-            func_name_lst = list(func_name_pattern.findall(def_line))
-            assert len(func_name_lst) == 1, "Error Matching Function Names..."
-            ret.extend(func_name_lst)
+            def_code_block = '\n'.join(code_lines[prev_line_num - 1: start_line])
+            func_name_lst = list(func_name_pattern.findall(def_code_block))
+            if len(func_name_lst) != 1:
+                ivy.warn(f"Multiple function name parsed in test_modified_docstrings: {func_name_lst}. "
+                         "This is possible but unusal!")
+            ret.append(func_name_lst[-1])
+        prev_line_num = end_line + 1  # update matching range
     return ret
 
 
@@ -106,16 +116,22 @@ def test_docstrings(backend):
         # sneek on changed_filepaths
         print(changed_filepaths)
 
-    for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:  # filtering py-code only files
-        path_strs_lst = changed_filepath.split(os.path.pathsep)  # 'array', 'container' or others
+    # filtering py-code only files
+    for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:
+        path_strs_lst = changed_filepath.split(
+            os.path.pathsep)  # 'array', 'container' or others
         print(path_strs_lst)
-        if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:  # skip all non-ivy changes
+        # skip all non-ivy changes
+        if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:
+            print(
+                f'skipping tests, conditions: {path_strs_lst[0] != "ivy"}, {len(path_strs_lst) <= 2}')
             continue
         test_type = path_strs_lst[1]
         from_array = test_type == 'array'
         from_container = test_type == 'container'
         # for each changed diff file, decide what functions to be tested
-        test_func_names = get_changed_func_name(changed_filepath)  # served as original dir(v)
+        test_func_names = get_changed_func_name(
+            changed_filepath)  # served as original dir(v)
         if from_array:
             for method_name in test_func_names:
                 method = getattr(ivy.Array, method_name)
@@ -124,13 +140,13 @@ def test_docstrings(backend):
                 else:
                     grad_incomp_handle = method
                 if (
-                        method_name in skip_arr_cont
-                        or helpers.gradient_incompatible_function(
-                            fn=grad_incomp_handle
-                        )
-                        or helpers.docstring_examples_run(fn=method, from_array=True)
-                    ):
-                        continue
+                    method_name in skip_arr_cont
+                    or helpers.gradient_incompatible_function(
+                        fn=grad_incomp_handle
+                    )
+                    or helpers.docstring_examples_run(fn=method, from_array=True)
+                ):
+                    continue
                 success = False
                 failures.append("Array." + method_name)
 
@@ -142,13 +158,13 @@ def test_docstrings(backend):
                 else:
                     grad_incomp_handle = method
                 if (
-                        method_name in skip_arr_cont
-                        or helpers.gradient_incompatible_function(
-                            fn=grad_incomp_handle
-                        )
-                        or helpers.docstring_examples_run(fn=method, from_container=True)
-                    ):
-                        continue
+                    method_name in skip_arr_cont
+                    or helpers.gradient_incompatible_function(
+                        fn=grad_incomp_handle
+                    )
+                    or helpers.docstring_examples_run(fn=method, from_container=True)
+                ):
+                    continue
                 success = False
                 failures.append("Container." + method_name)
 
