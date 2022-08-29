@@ -119,9 +119,9 @@ def test_docstrings(backend):
 
     # filtering py-code only files
     for changed_filepath in [changed_filepath for changed_filepath in changed_filepaths if changed_filepath.endswith('.py')]:
-        # changed_filepath: ivy/ivy_tests/test_modified_docstrings.py
+        # changed_filepath: ivy/ivy_tests/test_modified_docstrings.py -> /ivy/ivy_tests/test_modified_docstrings.py
         path_strs_lst = changed_filepath.split(
-            os.path.sep)[1:]  # 'array', 'container' or others
+            os.path.sep)  # 'array', 'container' or others
         print(path_strs_lst)
         # skip all non-ivy changes
         if path_strs_lst[0] != 'ivy' or len(path_strs_lst) <= 2:
@@ -133,7 +133,7 @@ def test_docstrings(backend):
         from_container = test_type == 'container'
         # for each changed diff file, decide what functions to be tested
         test_func_names = get_changed_func_name(
-            changed_filepath)  # served as original dir(v)
+            os.path.sep + changed_filepath)  # served as original dir(v)
         if from_array:
             for method_name in test_func_names:
                 method = getattr(ivy.Array, method_name)
