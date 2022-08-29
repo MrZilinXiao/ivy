@@ -12,12 +12,12 @@ import ivy
 class ArrayWithActivations(abc.ABC):
     def relu(self: ivy.Array, /, *, out: Optional[ivy.Array] = None) -> ivy.Array:
         """
-        ivy.Array instance method variant of ivy.relu. This method simply wraps the
+        ivy.Array instance method variant of ivy.relu. This method simply wraps the..
         function, and so the docstring for ivy.relu also applies to this method
         with minimal changes.
-        Array Change Test
+        Array Change Test..
 
-        Examples
+        Examples..
         --------
         >>> x = ivy.array([-1., 0., 1.])
         >>> y = x.relu()
@@ -36,7 +36,7 @@ class ArrayWithActivations(abc.ABC):
         """
         ivy.Array instance method variant of ivy.leaky_relu. This method simply wraps
         the function, and so the docstring for ivy.leaky_relu also applies to this
-        method with minimal changes.
+        method with minimal changes...
 
         Examples
         --------
