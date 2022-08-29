@@ -24,7 +24,7 @@ def relu(
     x: Union[ivy.Array, ivy.NativeArray], /, *, out: Optional[ivy.Array] = None
 ) -> ivy.Array:
     """Applies the rectified linear unit function element-wise.
-    try modifying a docstring............
+    try modifying a docstring.............
 
     Parameters
     ----------
