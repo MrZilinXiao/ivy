@@ -17,7 +17,7 @@ jobs:
       - name: Get Git Diff Filelist
         run: |
           cd ivy
-          git --no-pager diff origin/main origin/${GITHUB_HEAD_REF} --name-only --output name-changed
+          git --no-pager diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} --name-only --diff-filter=ACMRT --output name-changed
           python3 dump_diff.py
 
       - name: Run Docstring Tests
