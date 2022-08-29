@@ -15,6 +15,7 @@ class ArrayWithActivations(abc.ABC):
         ivy.Array instance method variant of ivy.relu. This method simply wraps the
         function, and so the docstring for ivy.relu also applies to this method
         with minimal changes.
+        Array Change Test
 
         Examples
         --------
