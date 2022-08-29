@@ -25,7 +25,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
     py_path = py_path[5:]  # strip `/ivy/`
     diff_command = f'cd ivy && git --no-pager diff "HEAD^..HEAD" --no-color -- {py_path}'
     try:
-        diff_ret = subprocess.check_output(diff_command, shell=True).decode('utf-8')
+        diff_ret = subprocess.check_output(diff_command, shell=True, stderr=subprocess.STDOUT).decode('utf-8')
     except subprocess.CalledProcessError as e:
         raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
 
