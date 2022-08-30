@@ -76,7 +76,7 @@ class ArrayWithManipulation(abc.ABC):
         -------
         ret
             An array with the elements of ``self``, but with its dimension added
-            by one in a given ``axis``.
+            by one in a given ``axis``..
 
         Examples
         --------

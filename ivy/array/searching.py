@@ -18,7 +18,7 @@ class ArrayWithSearching(abc.ABC):
         """
         ivy.Array instance method variant of ivy.argmax. This method simply
         wraps the function, and so the docstring for ivy.argmax also applies
-        to this method with minimal changes.
+        to this method with minimal changes..
 
         Parameters
         ----------
