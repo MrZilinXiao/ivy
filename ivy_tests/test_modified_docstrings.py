@@ -142,7 +142,7 @@ def test_docstrings(backend):
         from_container = test_type == 'container'
         # for each changed diff file, decide what functions to be tested
         test_func_names = get_changed_func_name(
-            '/ivy/' + changed_filepath)  # served as original dir(v)
+            '/ivy/' + changed_filepath)  # served as original dir(v) -> a series of functions
         if from_array:
             for method_name in test_func_names:
                 method = getattr(ivy.Array, method_name)
@@ -179,17 +179,16 @@ def test_docstrings(backend):
                 success = False
                 failures.append("Container." + method_name)
 
-        else:  # ignore other changes first; figure it out later;
-            raise NotImplementedError("Under Constrution...")
-            # for method_name in test_func_names:
-            #     if (
-            #         k in to_skip
-            #         or helpers.gradient_incompatible_function(fn=v)
-            #         or helpers.docstring_examples_run(fn=v)
-            #     ):
-            #         continue
-            #     success = False
-            #     failures.append(k)
+        else:  # not sure if this works as expected...
+            for method_name in test_func_names:
+                if (
+                    method_name in to_skip
+                    or helpers.gradient_incompatible_function(fn=getattr(ivy, method_name))
+                    or helpers.docstring_examples_run(fn=getattr(ivy, method_name))
+                ):
+                    continue
+                success = False
+                failures.append(method_name)
 
     if not success:
         assert (
