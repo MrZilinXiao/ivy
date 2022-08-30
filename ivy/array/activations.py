@@ -59,7 +59,7 @@ class ArrayWithActivations(abc.ABC):
         function, and so the docstring for ivy.gelu also applies to this method
         with minimal changes.
 
-        Examples
+        Examples.
         --------
         >>> x = ivy.array([0.3, -0.1])
         >>> y = x.gelu()
@@ -74,7 +74,7 @@ class ArrayWithActivations(abc.ABC):
         function, and so the docstring for ivy.sigmoid also applies to this method
         with minimal changes..
 
-        Examples
+        Examples.
         --------
         >>> x = ivy.array([-1., 1., 2.])
         >>> y = x.sigmoid()
@@ -95,7 +95,7 @@ class ArrayWithActivations(abc.ABC):
         function, and so the docstring for ivy.softmax also applies to this method
         with minimal changes..
 
-        Examples
+        Examples.
         --------
         >>> x = ivy.array([1.0, 0, 1.0])
         >>> y = x.softmax()
