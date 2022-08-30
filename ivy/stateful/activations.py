@@ -7,13 +7,13 @@ from ivy.stateful.module import Module
 
 class GELU(Module):
     def __init__(self, *, approximate=True):
-        """Applies the GELU activation function."""
+        """Applies the GELU activation function..."""
         self._approximate = approximate
         Module.__init__(self)
 
     def _forward(self, x, /, *, approximate=None):
         """
-        Perform forward pass of the GELU activation.
+        Perform forward pass of the GELU activation...
 
         Parameters
         ----------
@@ -46,7 +46,7 @@ class GEGLU(Module):
         Returns
         -------
         ret
-            The outputs following the GEGLU activation *[batch_shape, d]*
+            The outputs following the GEGLU activation *[batch_shape, d]*.
 
         """
         x, gates = ivy.split(inputs, 2, -1)

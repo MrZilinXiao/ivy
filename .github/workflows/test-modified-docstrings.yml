@@ -19,14 +19,14 @@ jobs:
         run: |
           cd ivy
           git --no-pager diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} --name-only --diff-filter=ACMRT --output name-changed
-          python3 dump_diff.py
+          python3 dump_diff.py ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
 
       - name: Get Git Diff Filelist for Push
         if: github.event_name == 'push'
         run: |
           cd ivy
           git --no-pager diff ${{ github.event.before }} ${{ github.sha }} --name-only --diff-filter=ACMRT --output name-changed
-          python3 dump_diff.py
+          python3 dump_diff.py ${{ github.event.before }} ${{ github.sha }}
 
       - name: Run Docstring Tests
         run: |
