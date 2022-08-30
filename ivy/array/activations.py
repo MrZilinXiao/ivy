@@ -74,7 +74,7 @@ class ArrayWithActivations(abc.ABC):
         function, and so the docstring for ivy.sigmoid also applies to this method
         with minimal changes..
 
-        Examples.
+        Examples..
         --------
         >>> x = ivy.array([-1., 1., 2.])
         >>> y = x.sigmoid()
@@ -95,7 +95,7 @@ class ArrayWithActivations(abc.ABC):
         function, and so the docstring for ivy.softmax also applies to this method
         with minimal changes..
 
-        Examples.
+        Examples..
         --------
         >>> x = ivy.array([1.0, 0, 1.0])
         >>> y = x.softmax()
@@ -108,7 +108,7 @@ class ArrayWithActivations(abc.ABC):
         """
         ivy.Array instance method variant of ivy.softplus. This method simply wraps the
         function, and so the docstring for ivy.softplus also applies to this method
-        with minimal changes..
+        with minimal changes...
 
         Examples
         --------

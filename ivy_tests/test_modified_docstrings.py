@@ -41,7 +41,7 @@ def get_changed_func_name(py_path: str) -> List[str]:
             1  # docstring end line number
         print(f'line num debug: {start_line}, {changed_line_nums}, {end_line}')
         if any(start_line <= changed_line_num <= end_line for changed_line_num in changed_line_nums) and \
-                any('>>> print(' in line for line in range(start_line - 1, end_line)):
+                any('>>> print(' in line for line in code_lines[start_line - 1: end_line]):
             # retrieve the function name corresponding to the start line
             def_code_block = '\n'.join(code_lines[prev_line_num - 1: start_line])
             func_name_lst = list(func_name_pattern.findall(def_code_block))
