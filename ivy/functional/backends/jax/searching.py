@@ -1,9 +1,14 @@
-from typing import Optional, Tuple
+from numbers import Number
+from typing import Optional, Tuple, Union
 
-import ivy
 import jax.numpy as jnp
 
+import ivy
 from ivy.functional.backends.jax import JaxArray
+
+
+# Array API Standard #
+# ------------------ #
 
 
 def argmax(
@@ -14,10 +19,7 @@ def argmax(
     keepdims: bool = False,
     out: Optional[JaxArray] = None,
 ) -> JaxArray:
-    return jnp.argmax(x, axis=axis, out=out, keepdims=keepdims)
-
-
-argmax.support_native_out = True
+    return jnp.argmax(x, axis=axis, keepdims=keepdims)
 
 
 def argmin(
@@ -26,19 +28,29 @@ def argmin(
     *,
     axis: Optional[int] = None,
     keepdims: bool = False,
+    dtype: Optional[jnp.dtype] = jnp.int64,
     out: Optional[JaxArray] = None,
 ) -> JaxArray:
-    return jnp.argmin(x, axis=axis, out=out, keepdims=keepdims)
-
-
-argmin.support_native_out = True
+    ret = jnp.argmin(x, axis=axis, keepdims=keepdims)
+    if dtype is not None:
+        return jnp.array(ret, dtype=dtype)
+    return ret
 
 
 def nonzero(
     x: JaxArray,
     /,
-) -> Tuple[JaxArray]:
-    return jnp.nonzero(x)
+    *,
+    as_tuple: bool = True,
+    size: Optional[int] = None,
+    fill_value: Number = 0,
+) -> Union[JaxArray, Tuple[JaxArray]]:
+    res = jnp.nonzero(x, size=size, fill_value=fill_value)
+
+    if as_tuple:
+        return tuple(res)
+
+    return jnp.stack(res, axis=1)
 
 
 def where(
@@ -50,4 +62,12 @@ def where(
     out: Optional[JaxArray] = None,
 ) -> JaxArray:
     x1, x2 = ivy.promote_types_of_inputs(x1, x2)
-    return jnp.where(condition, x1, x2)
+    return jnp.where(condition, x1, x2).astype(x1.dtype)
+
+
+# Extra #
+# ----- #
+
+
+def argwhere(x: JaxArray, /, *, out: Optional[JaxArray] = None) -> JaxArray:
+    return jnp.argwhere(x)
